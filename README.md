@@ -1,0 +1,1 @@
+A bunch of basic numerical investigations on Josephson junctions, some using the Kwant library.
