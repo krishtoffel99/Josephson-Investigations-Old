@@ -1,5 +1,6 @@
 import numpy as np
 import tinyarray as tiny
+from scipy.linalg import orth
 sx = tiny.array([[0 , 1] , [1 , 0]])
 sy = tiny.array([[0 , -1j] , [1j , 0]])
 sz = tiny.array([[1 , 0] , [0 , -1]])
@@ -79,7 +80,7 @@ def sorting_modes(eigenvalues , eigenvectors , tol = 1e-4):
     
     return pos_prop , neg_prop , pos_evanesce , neg_evanesce , list_of_eigenvalues
 
-def calculate_transfer_matrices(slice , params):
+def calculate_transfer_matrices(slice , params ):
     energy = params.energy
     M00 = np.linalg.inv(T(slice+1 , -1, params))@(energy -  h_0(slice , params)) # <- Calculating the Hamiltonian at slice.
     M01 = -np.linalg.inv(T(slice+1 , -1, params))@T(slice , +1 , params)
@@ -89,8 +90,11 @@ def calculate_transfer_matrices(slice , params):
     M = np.block([[M00 , M01],[M10 , M11]]) #<- Matrix to diagonalise for propagating modes in lead
     evals , evecs = np.linalg.eig(M)
     
-    pos_prop , neg_prop , pos_evanesce , neg_evanesce , list_of_eigenvalues = sorting_modes(evals , evecs  , tol = 1e-4)
+    # Matrix M is not symmetric, so vectors are not necessarily orthonormal.
+    # Let us orthogonalise them:
+    evecs_orth = orth(evecs)
 
+    pos_prop , neg_prop , pos_evanesce , neg_evanesce , list_of_eigenvalues = sorting_modes(evals , evecs_orth  , tol = 1e-4)
     # First I am going to glue together all modes that evanesce/propagate in the positive x-direction:
     pos_modes = np.hstack((pos_prop , pos_evanesce))
     neg_modes = np.hstack((neg_prop , neg_evanesce))
@@ -107,4 +111,8 @@ def calculate_transfer_matrices(slice , params):
     F_pos = U_pos @ Lambda_pos @ np.linalg.inv(U_pos)
     F_neg = U_neg @ Lambda_neg @ np.linalg.inv(U_neg)
 
-    return F_pos , F_neg
+    # This is for debugging purposes:
+    debugdict = {'U_pos' : U_pos , 'U_neg' : U_neg , 'Lambda_pos' : Lambda_pos , 'Lambda_neg': Lambda_neg
+                 , 'pos_prop' : pos_prop , 'neg_prop' : neg_prop , 'pos_evanesce' : pos_evanesce , 'neg_evanesce' : neg_evanesce
+                 ,'list_of_eigenvalues' : list_of_eigenvalues , 'evals': evals , 'evecs': evecs}
+    return F_pos , F_neg , debugdict
