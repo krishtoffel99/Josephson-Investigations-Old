@@ -80,8 +80,8 @@ def sorting_modes(eigenvalues , eigenvectors , tol = 1e-4):
     return pos_prop , neg_prop , pos_evanesce , neg_evanesce , list_of_eigenvalues
 
 def calculate_transfer_matrices(slice , params):
-    energy = 1j*np.pi*(2*(params.n) + 1)*params.T
-    M00 = -np.linalg.inv(T(slice+1 , -1, params))@(energy -  h_0(slice , params)) # <- Calculating the Hamiltonian at slice.
+    energy = params.energy
+    M00 = np.linalg.inv(T(slice+1 , -1, params))@(energy -  h_0(slice , params)) # <- Calculating the Hamiltonian at slice.
     M01 = -np.linalg.inv(T(slice+1 , -1, params))@T(slice , +1 , params)
     M10 = np.identity(2*params.W)
     M11 = np.zeros(shape = (2*params.W , 2*params.W))
