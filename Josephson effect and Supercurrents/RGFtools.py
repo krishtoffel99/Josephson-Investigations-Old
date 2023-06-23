@@ -102,10 +102,17 @@ def calculate_transfer_matrices(slice , params ):
     # The U(\pm)-matrices consisten of amplitudes on the j = 0 slice. So we take only the first half rows:
     U_pos = pos_modes[0:int(pos_modes.shape[0]/2) , :]
     U_neg = neg_modes[0:int(neg_modes.shape[0]/2) , :]
-
+    
     # The \Lambda(\pm) matrix comprises of all the corresponding eigenvalues:
     Lambda_pos = np.diag(np.hstack((list_of_eigenvalues[0] ,list_of_eigenvalues[2])))
     Lambda_neg = np.diag(np.hstack((list_of_eigenvalues[1] , list_of_eigenvalues[3])))
+
+    # Velocity normalisations:
+    vel_pos = np.diag(1/np.sqrt(np.abs(np.angle(np.hstack((list_of_eigenvalues[0] ,list_of_eigenvalues[2]))))))
+    vel_neg = np.diag(1/np.sqrt(np.abs(np.angle(np.hstack((list_of_eigenvalues[1] ,list_of_eigenvalues[3]))))))
+
+    U_pos_norm = U_pos @ vel_pos
+    U_neg_norm = U_neg @ vel_neg
 
     # Construct the F(\pm) transfer matrices:
     F_pos = U_pos @ Lambda_pos @ np.linalg.inv(U_pos)
