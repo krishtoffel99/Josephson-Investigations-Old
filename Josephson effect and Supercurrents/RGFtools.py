@@ -29,11 +29,11 @@ def h_0(j , params):
     return h_0
 
 def T(j, pm , params):
-    B = params.flux / ((params.L + 2)*params.W)
-    if j < 1 or j > params.L:
+    peierlphase = 2*np.pi*params.flux / ((params.L - 1)*params.W)
+    if j <= 1 or j >= params.L + 1:
         return np.kron(np.identity(params.W) , -params.t*sz)
-    if j >= 1 and j <= params.L:
-        peierls_e = pm*(B/2)*np.arange(params.W) # array of peierl phases for electrons
+    if j >= 2 and j <= params.L:
+        peierls_e = pm*(peierlphase)*np.arange(params.W) # array of peierl phases for electrons
         peierls_h = -peierls_e # array of peierl phases for holes.
         peierls_interweaved = np.exp(1j*np.vstack((peierls_e , peierls_h)).reshape((-1 , ) , order = 'F')) #<- talking elementwise exponential.
         peierls_bdg = np.diag(peierls_interweaved) # Peierls phases as the appear in the BdG matrix
@@ -72,7 +72,7 @@ def sorting_modes(eigenvalues , eigenvectors , tol = 1e-4):
     #Eigenvectors that evanesce in the negative x direction:
     neg_evanesce = eigenvectors[: , (np.abs(eigenvalues) - 1) > tol]
     #Eigenvectors that propagate in the positive x direction:
-    propagatingeigenvectors = eigenvectors[: , np.abs((np.abs(eigenvalues) - 1)) < tol]
+    propagatingeigenvectors = eigenvectors[: , np.abs((np.abs(eigenvalues) - 1)) <= tol]
     pos_prop = propagatingeigenvectors[: , np.angle(propagatingstates) > 0]
     neg_prop = propagatingeigenvectors[: , np.angle(propagatingstates) < 0]
     
@@ -82,7 +82,7 @@ def sorting_modes(eigenvalues , eigenvectors , tol = 1e-4):
 
 def calculate_transfer_matrices(slice , params ):
     energy = params.energy
-    M00 = np.linalg.inv(T(slice+1 , -1, params))@(energy -  h_0(slice , params)) # <- Calculating the Hamiltonian at slice.
+    M00 = np.linalg.inv(T(slice+1 , -1, params))@(energy*np.identity(2*params.W) -  h_0(slice , params)) # <- Calculating the Hamiltonian at slice.
     M01 = -np.linalg.inv(T(slice+1 , -1, params))@T(slice , +1 , params)
     M10 = np.identity(2*params.W)
     M11 = np.zeros(shape = (2*params.W , 2*params.W))
@@ -111,8 +111,9 @@ def calculate_transfer_matrices(slice , params ):
     F_pos = U_pos @ Lambda_pos @ np.linalg.inv(U_pos)
     F_neg = U_neg @ Lambda_neg @ np.linalg.inv(U_neg)
 
-    # This is for debugging purposes:
+    # This is for diagnostic purposes:
     debugdict = {'U_pos' : U_pos , 'U_neg' : U_neg , 'Lambda_pos' : Lambda_pos , 'Lambda_neg': Lambda_neg
                  , 'pos_prop' : pos_prop , 'neg_prop' : neg_prop , 'pos_evanesce' : pos_evanesce , 'neg_evanesce' : neg_evanesce
                  ,'list_of_eigenvalues' : list_of_eigenvalues , 'evals': evals , 'evecs': evecs}
-    return F_pos , F_neg , debugdict
+    
+    return F_pos , F_neg , debugdict 
