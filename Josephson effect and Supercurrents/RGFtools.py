@@ -101,6 +101,7 @@ def calculate_transfer_matrices(slice , params ):
 
     # The U(\pm)-matrices consisten of amplitudes on the j = 0 slice. So we take only the first half rows:
     U_pos = pos_modes[0:int(pos_modes.shape[0]/2) , :]
+    print(U_pos.shape)
     U_neg = neg_modes[0:int(neg_modes.shape[0]/2) , :]
 
     # The \Lambda(\pm) matrix comprises of all the  eigenvalues corresponding to propagating channels:
