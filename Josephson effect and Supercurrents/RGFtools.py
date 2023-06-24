@@ -95,21 +95,23 @@ def calculate_transfer_matrices(slice , params ):
     evecs_orth = orth(evecs)
 
     pos_prop , neg_prop , pos_evanesce , neg_evanesce , list_of_eigenvalues = sorting_modes(evals , evecs_orth  , tol = 1e-4)
-    # First I am going to glue together all modes that evanesce/propagate in the positive x-direction:
-    pos_modes = np.hstack((pos_prop , pos_evanesce))
-    neg_modes = np.hstack((neg_prop , neg_evanesce))
+    # First I am going to glue together all modes that only *propagate* in the positive x-direction:
+    pos_modes = np.hstack((pos_prop , []))
+    neg_modes = np.hstack((neg_prop , []))
 
     # The U(\pm)-matrices consisten of amplitudes on the j = 0 slice. So we take only the first half rows:
     U_pos = pos_modes[0:int(pos_modes.shape[0]/2) , :]
     U_neg = neg_modes[0:int(neg_modes.shape[0]/2) , :]
 
-    # The \Lambda(\pm) matrix comprises of all the corresponding eigenvalues:
-    Lambda_pos = np.diag(np.hstack((list_of_eigenvalues[0] ,list_of_eigenvalues[2])))
-    Lambda_neg = np.diag(np.hstack((list_of_eigenvalues[1] , list_of_eigenvalues[3])))
+    # The \Lambda(\pm) matrix comprises of all the  eigenvalues corresponding to propagating channels:
+    Lambda_pos = np.diag(np.hstack((list_of_eigenvalues[0] ,[])))
+    Lambda_neg = np.diag(np.hstack((list_of_eigenvalues[1] , [])))
 
     # Construct the F(\pm) transfer matrices:
-    F_pos = U_pos @ Lambda_pos @ np.linalg.inv(U_pos)
-    F_neg = U_neg @ Lambda_neg @ np.linalg.inv(U_neg)
+    # Since we are only accouting for propagating channels, the U matrices may not be square, so generalise
+    # to using Moore-Penrose inverse i.e. np.linalg.pinv
+    F_pos = U_pos @ Lambda_pos @ np.linalg.pinv(U_pos)
+    F_neg = U_neg @ Lambda_neg @ np.linalg.pinv(U_neg)
 
     # This is for diagnostic purposes:
     debugdict = {'U_pos' : U_pos , 'U_neg' : U_neg , 'Lambda_pos' : Lambda_pos , 'Lambda_neg': Lambda_neg
