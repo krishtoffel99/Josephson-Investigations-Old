@@ -94,10 +94,10 @@ def calculate_transfer_matrices(slice , params ):
     # Let us orthogonalise them:
     evecs_orth = orth(evecs)
 
-    pos_prop , neg_prop , pos_evanesce , neg_evanesce , list_of_eigenvalues = sorting_modes(evals , evecs_orth  , tol = 1e-4)
+    pos_prop , neg_prop , pos_evanesce , neg_evanesce , list_of_eigenvalues = sorting_modes(evals , evecs_orth  , tol  = params.tol)
     # First I am going to glue together all modes that only *propagate* in the positive x-direction:
-    pos_modes = np.hstack((pos_prop , []))
-    neg_modes = np.hstack((neg_prop , []))
+    pos_modes = pos_prop
+    neg_modes = neg_prop
 
     # The U(\pm)-matrices consisten of amplitudes on the j = 0 slice. So we take only the first half rows:
     U_pos = pos_modes[0:int(pos_modes.shape[0]/2) , :]
