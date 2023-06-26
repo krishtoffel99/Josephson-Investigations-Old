@@ -1,0 +1,30 @@
+import numpy as np
+import tinyarray as tiny
+from scipy.linalg import orth
+sx = tiny.array([[0 , 1] , [1 , 0]])
+sy = tiny.array([[0 , -1j] , [1j , 0]])
+sz = tiny.array([[1 , 0] , [0 , -1]])
+I = tiny.array([[1 , 0] , [0 , 1]])
+t_plus = 0.5*(np.kron(sx , I) + 1j*np.kron(sy , I))
+t_minus = t_plus.T
+phs = np.kron(sy , sy)
+
+def h_0(j , params):
+    # This function constructs the Hamiltonian for sites along the jth slice. It does not include hoppings between neighbouring slices.
+    # We will use the gauge A = By \hat{x}
+    if j < 1:
+        onsitematrix = 4*params.t - params.mu
+
+    if j >= 1 and j <=params.L:
+        onsitematrix = 4*params.t -params.mu
+    
+    if j > params.L:
+        onsitematrix = 4*params.t*sz - params.mu*sz + params.Delta*np.exp(1j*params.phase)*np.array([[0 , 1] ,[0 , 0]]) + params.Delta*np.exp(-1j*params.phase)*np.array([[0 , 0] ,[1 , 0]])
+    
+    off_diagonal_elements = np.diag( np.ones(params.W-1) , k = 1) + np.diag( np.ones(params.W-1) , k = -1)
+    h_hops = np.kron(off_diagonal_elements , -params.t*sz)
+
+    h_onsites = np.kron(np.identity(params.W) , onsitematrix)
+    h_0 = h_onsites + h_hops
+    return h_0
+
