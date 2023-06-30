@@ -106,10 +106,10 @@ def calculate_transfer_matrices(slice , params ):
     # Normalising the U_pos and U_neg columns:
 
     for i in range(U_pos.shape[1]):
-        norm_pos = np.conj(U_pos[: , i])@U_pos
-        norm_neg = np.conj(U_pos[: , i])@U_neg
+        norm_pos = np.conj(U_pos[: , i])@U_pos[: , i]
+        norm_neg = np.conj(U_neg[: , i])@U_neg[: , i]
         U_pos[: , i] = U_pos[: , i ] / np.sqrt(norm_pos)
-        U_neg[: , i] = U_pos[: , i ] / np.sqrt(norm_neg)
+        U_neg[: , i] = U_neg[: , i ] / np.sqrt(norm_neg)
 
 
     # The \Lambda(\pm) matrix comprises of all the corresponding eigenvalues:
