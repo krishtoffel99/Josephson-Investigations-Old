@@ -103,6 +103,15 @@ def calculate_transfer_matrices(slice , params ):
     U_pos = pos_modes[0:int(pos_modes.shape[0]/2) , :]
     U_neg = neg_modes[0:int(neg_modes.shape[0]/2) , :]
 
+    # Normalising the U_pos and U_neg columns:
+
+    for i in range(U_pos.shape[1]):
+        norm_pos = np.conj(U_pos[: , i])@U_pos
+        norm_neg = np.conj(U_pos[: , i])@U_neg
+        U_pos[: , i] = U_pos[: , i ] / np.sqrt(norm_pos)
+        U_neg[: , i] = U_pos[: , i ] / np.sqrt(norm_neg)
+
+
     # The \Lambda(\pm) matrix comprises of all the corresponding eigenvalues:
     Lambda_pos = np.diag(np.hstack((list_of_eigenvalues[0] ,list_of_eigenvalues[2])))
     Lambda_neg = np.diag(np.hstack((list_of_eigenvalues[1] , list_of_eigenvalues[3])))
