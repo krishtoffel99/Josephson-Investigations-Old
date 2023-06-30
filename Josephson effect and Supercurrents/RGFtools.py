@@ -88,7 +88,7 @@ def calculate_transfer_matrices(slice , params ):
     M11 = np.zeros(shape = (2*params.W , 2*params.W))
 
     M = np.block([[M00 , M01],[M10 , M11]]) #<- Matrix to diagonalise for propagating modes in lead
-    evals , evecs = np.linalg.eigh(M)
+    evals , evecs = np.linalg.eig(M)
     
     # Matrix M is not symmetric, so vectors are not necessarily orthonormal.
     # Let us orthogonalise them:
