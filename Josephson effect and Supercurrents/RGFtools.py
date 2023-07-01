@@ -104,7 +104,6 @@ def calculate_transfer_matrices(slice , params ):
     U_neg = neg_modes[0:int(neg_modes.shape[0]/2) , :]
 
     # Normalising the U_pos and U_neg columns:
-
     for i in range(U_pos.shape[1]):
         norm_pos = np.conj(U_pos[: , i])@U_pos[: , i]
         norm_neg = np.conj(U_neg[: , i])@U_neg[: , i]
