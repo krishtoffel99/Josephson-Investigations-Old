@@ -99,3 +99,25 @@ def calculate_transfer_matrices(slice , params ):
                  ,'list_of_eigenvalues' : list_of_eigenvalues , 'evals': evals , 'evecs': evecs}
     
     return F_pos , F_neg , debugdict
+
+
+def group_vel(vector , bloch_factor, slice, params):
+    """
+    Given an eigenvector (\vec{u}_{n}) and bloch_factor (\lambda_{n}), this function computes the group velocity of the state.
+    We use Equation 5 in https://arxiv.org/pdf/cond-mat/0501609.pdf
+
+    Arguments:
+    - vector: nd-array to compute group velocity of.
+    - bloch_factor: complex128, bloch factor associated with that state.
+    - slice: int , slice index.
+    - params: system parameters. 
+    Returns:
+     Group velocity of the wavefunction.
+    """
+    product = bloch_factor*(np.conjugate(vector.T))@T(slice , -1)@vector
+    prefactor = -(2*params.a)*2*np.pi
+
+    return np.imag(prefactor*product)
+
+
+

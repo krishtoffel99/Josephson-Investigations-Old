@@ -7,7 +7,7 @@ A few useful things to try:
 $ v_{n} = -\frac{2a}{\hbar}\textrm{Im}\big[ \lambda_{n}(\pm) \vec{u}^{\dagger}_{n}(\pm) \hat{B}^{\dagger} \vec{u}_{n}(\pm)\big] $ 
 where $\hat{B}^{\dagger}$ is the hopping matrix to the left. The group velocity of evanescent modes is automatically zero.
 * The $\hat{F}(\pm) = \hat{U}(\pm) \hat{\Lambda} (\pm) \hat{U}^{-1}(\pm)$ transfer matrix should also satsify:
-$ (\varepsilon - \hat{H}) -\hat{B}^{\dagger}\hat{F}(\pm) -\hat{B}\hat{F}^{-1}(\pm) = 0$
+$$ (\epsilon - \hat{H}) -\hat{B}^{\dagger}\hat{F}(\pm) -\hat{B}\hat{F}^{-1}(\pm) = 0$$
 It would be good to see if this is the case.
 * In the present paper, the authors define dual eigenvectors $\tilde{u}_{n}(\pm)$ such that $ \tilde{u}^{\dagger}_{n}(\pm) \vec{u}_{m}(\pm) = \delta_{n,m} $ and $  \tilde{u}_{n}(\pm) \vec{u}^{\dagger}_{m}(\pm) = \delta_{n,m} $. I think this is equivalent to taking the inverse of the $\hat{U}(\pm)$ matrix...
 * They also normalise the $\vec{u}_{n}(\pm)$ vectors!
