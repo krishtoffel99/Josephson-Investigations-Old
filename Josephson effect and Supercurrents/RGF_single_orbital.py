@@ -59,7 +59,7 @@ def sorting_modes(eigenvalues , eigenvectors , tol = 1e-4):
     neg_prop = propagatingeigenvectors[: , np.angle(propagatingstates) < 0]
     
     list_of_eigenvalues= [pos_p_evals , neg_p_evals , pos_e_evals , neg_e_evals]
-    
+
     return pos_prop , neg_prop , pos_evanesce , neg_evanesce , list_of_eigenvalues
 
 def calculate_transfer_matrices(slice , params ):
@@ -114,7 +114,7 @@ def group_vel(vector , bloch_factor, slice, params):
     Returns:
      Group velocity of the wavefunction.
     """
-    product = bloch_factor*(np.conjugate(vector.T))@T(slice , -1)@vector
+    product = bloch_factor*(np.conjugate(vector.T))@T(slice , -1 , params)@vector
     prefactor = -(2*params.a)*2*np.pi
 
     return np.imag(prefactor*product)
