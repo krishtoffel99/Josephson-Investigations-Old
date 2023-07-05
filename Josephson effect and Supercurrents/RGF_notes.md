@@ -15,3 +15,4 @@ It would be good to see if this is the case.
 $$\sqrt{\frac{v_{R , n}(+) }{ v_{L, m}(+)}}$$
 where $n , m$ index eigenmodes. This also eliminates all matrix elements $t_{nm}$ between unphysical evanescent modes. 
 * Lastly, functions like `scipy.linalg.eig` solves the generalised eigenvalue problem- perhaps better accuracy?
+
