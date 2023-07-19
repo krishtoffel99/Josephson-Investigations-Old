@@ -64,7 +64,8 @@ def sorting_modes(eigenvalues , eigenvectors , tol = 1e-4):
 
 def calculate_transfer_matrices(slice , params ):
     energy = params.energy
-    M00 = np.linalg.inv(T(slice+1 , -1, params))@(energy*np.identity(params.W) -  h_0(slice , params)) # <- Calculating the Hamiltonian at slice.
+    M00 = np.linalg.inv(T(slice+1 , -1, params))@(energy*np.identity(params.W) -  h_0(slice , params))
+    # <- Calculating the Hamiltonian at slice.
     M01 = -np.linalg.inv(T(slice+1 , -1, params))@T(slice , +1 , params)
     M10 = np.identity(params.W)
     M11 = np.zeros(shape = (params.W , params.W))
@@ -85,7 +86,7 @@ def calculate_transfer_matrices(slice , params ):
     U_pos = pos_modes[0:int(pos_modes.shape[0]/2) , :]
     U_neg = neg_modes[0:int(neg_modes.shape[0]/2) , :]
 
-    # The \Lambda(\pm) matrix comprises of all the corresponding eigenvalues:
+    # The \Lambda(\pm) matrix comprises of all th e corresponding eigenvalues:
     Lambda_pos = np.diag(np.hstack((list_of_eigenvalues[0] ,list_of_eigenvalues[2])))
     Lambda_neg = np.diag(np.hstack((list_of_eigenvalues[1] , list_of_eigenvalues[3])))
 
