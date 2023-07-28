@@ -7,4 +7,4 @@ This library is used to find and compute boundstat wave function.
 It is faster that SVD but may return false positive.
 """
 
-from . import fast, standard
+from . import _fast, _standard
