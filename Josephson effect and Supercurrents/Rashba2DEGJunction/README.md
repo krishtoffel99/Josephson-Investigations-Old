@@ -1,0 +1,1 @@
+Playing around with Pientka,Keselman,Berg and Stern's proposal of using a planar Rashba superconductor for Majorana end modes.
