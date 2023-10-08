@@ -1,0 +1,8 @@
+___________________________
+/Users/krishnanganesh/Desktop/Josephson Investigations/Josephson effect and Supercurrents/Rashba2DEGJunction/savedsessions/
+BandStructsGap08-10-2023-20-33-00.nb 
+ {'a': 1, 'L_x': 0, 'L_y': 50, 'W': 6, 'm_eff': 0.5, 'mu': 6, 'alpha': 0.5, 'Deltabottom': 0.5, 'Deltatop': 0.1, 'k': 0.08617333262145178, 'T': 0.05, 'current_unit': 20.97575082646177}
+___________________________
+/Users/krishnanganesh/Desktop/Josephson Investigations/Josephson effect and Supercurrents/Rashba2DEGJunction/savedsessions/
+BandStructsGap08-10-2023-20-36-48.nb 
+ {'a': 1, 'L_x': 0, 'L_y': 50, 'W': 6, 'm_eff': 0.5, 'mu': 6, 'alpha': 0.5, 'Deltabottom': 0.5, 'Deltatop': 0.1, 'k': 0.08617333262145178, 'T': 0.05, 'current_unit': 20.97575082646177}
